@@ -57,6 +57,10 @@ namespace Chess
 		//		Mystery:  U+2687  U+2689
     virtual std::string to_unicode() const = 0;
 
+
+	// Return point value of given piece
+	virtual int point_value() const = 0;
+
 	protected:
 		// When a piece is created, its color must be provided as an argument
 		Piece(bool is_white) : white(is_white){ }
