@@ -6,7 +6,7 @@ namespace Chess
         if (start.first == end.first && start.second == end.second) {
             return false;
         }
-        if(Pawn::is_white){
+        if(Pawn::is_white()){
             if(start.second == 2){
                 if((end.second - start.second == 2 || end.second - start.second == 1) && start.first == end.first){
                     return true;
@@ -34,7 +34,7 @@ namespace Chess
         if (start.first == end.first && start.second == end.second) {
             return false;
         }
-        if(Pawn::is_white){
+        if(Pawn::is_white()){
             if(end.second - start.second == 1 && abs(end.first - start.first) == 1){
                 return true;
             }
