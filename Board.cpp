@@ -17,7 +17,9 @@ namespace Chess
 
   const Piece* Board::operator()(const Position& position) const {
     /////////////////////////
-    // [REPLACE THIS STUB] //
+    if(Board::occ.find(position) != Board::occ.end()){
+      return Board::occ.at(position);
+    }
     /////////////////////////
     return NULL;
   }
