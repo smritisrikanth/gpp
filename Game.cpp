@@ -40,7 +40,24 @@ namespace Chess
 
 	void Game::make_move(const Position& start, const Position& end) {
 		/////////////////////////
-		board.operator(start);
+		const Piece* curr_piece = board.operator() (start);
+		if (!curr_piece){
+			throw Exception("no piece at start position");
+		}
+		if (!board.is_valid_position(start)){
+			throw Exception("start position is not on board");
+		}
+		if (!board.is_valid_position(end)){
+			throw Exception("end position is not on board");
+		}
+		
+		if(curr_piece->legal_move_shape(start, end) curr_piece->legal_capture_shape(start, end)){
+			if(!board.add_piece(end, curr_piece->to_ascii())){
+
+			}
+			board.remove_piece(start);
+			Game::is_white_turn != Game::is_white_turn;
+		}
 		/////////////////////////
 	}
 
