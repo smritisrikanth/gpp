@@ -45,6 +45,8 @@ namespace Chess
 
 		bool is_valid_Position(const Position& position);
 
+		void remove_piece(const Position& position);
+
 
 		// TODO: iterator and const iterator
 		/*

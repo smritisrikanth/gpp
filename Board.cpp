@@ -68,6 +68,10 @@ namespace Chess
     return (position.first >= 'A' && position.first <= 'H' && position.second >= 1 && position.second <= 8);
   }
 
+  void Board::remove_piece(const Position& position) {
+    occ.erase(position);
+  }
+
   /////////////////////////////////////
   // DO NOT MODIFY THIS FUNCTION!!!! //
   /////////////////////////////////////
