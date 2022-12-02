@@ -25,10 +25,17 @@ namespace Chess
   }
   
   void Board::add_piece(const Position& position, const char& piece_designator) {
-    /////////////////////////
-    // [REPLACE THIS STUB] //
-    /////////////////////////
-    occ[position] = create_piece(piece_designator);
+    Chess::Piece *piece = create_piece(piece_designator);
+    if (piece == NULL) {
+      throw std::runtime_error("invalid designator");
+    }
+    else if (position.first < 'A' || position.first > 'H' || position.second < 1 || position.second > 8) {
+      throw std::runtime_error("invalid position");
+    }
+    else if (operator()(position) != NULL) {
+      throw std::runtime_error("position is occupied");
+    }
+    occ[position] = piece;
   }
 
   void Board::display() const {
