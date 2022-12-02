@@ -43,6 +43,8 @@ namespace Chess
 		// Returns true if the board has the right number of kings on it
 		bool has_valid_kings() const;
 
+		bool is_valid_Position(const Position& position);
+
 
 		// TODO: iterator and const iterator
 		/*

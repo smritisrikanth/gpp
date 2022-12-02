@@ -27,13 +27,13 @@ namespace Chess
   void Board::add_piece(const Position& position, const char& piece_designator) {
     Chess::Piece *piece = create_piece(piece_designator);
     if (piece == NULL) {
-      throw std::runtime_error("invalid designator");
+      throw Exception("invalid designator");
     }
-    else if (position.first < 'A' || position.first > 'H' || position.second < 1 || position.second > 8) {
-      throw std::runtime_error("invalid position");
+    else if (!is_valid_position(position)) {
+      throw Exception("invalid position");
     }
     else if (operator()(position) != NULL) {
-      throw std::runtime_error("position is occupied");
+      throw Exception("position is occupied");
     }
     occ[position] = piece;
   }
@@ -62,6 +62,10 @@ namespace Chess
       }
     }
     return (white_king_count == 1) && (black_king_count == 1);
+  }
+
+  bool is_valid_position(const Position& position) {
+    return (position.first >= 'A' && position.first <= 'H' && position.second >= 1 && position.second <= 8);
   }
 
   /////////////////////////////////////
