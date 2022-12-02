@@ -51,13 +51,32 @@ namespace Chess
 			throw Exception("end position is not on board");
 		}
 		
-		if(curr_piece->legal_move_shape(start, end) curr_piece->legal_capture_shape(start, end)){
-			if(!board.add_piece(end, curr_piece->to_ascii())){
-
+		if(board.operator()(end)){
+			if(curr_piece->is_white() == board.operator()(end)->is_white()){
+				throw Exception("cannot capture own piece");
 			}
-			board.remove_piece(start);
-			Game::is_white_turn != Game::is_white_turn;
+			if(curr_piece->legal_capture_shape(start, end)){
+				board.remove_piece(end);
+				board.add_piece(end, curr_piece->to_ascii());
+				board.remove_piece(start);
+
+			}else{
+				throw Exception("illegal capture shape");
+			}
+		} else{
+			if (curr_piece->legal_move_shape(start, end)){
+				board.remove_piece(start);
+				board.add_piece(end, curr_piece->to_ascii());
+			}else {
+				throw Exception ("illegal move shape");
+			}
 		}
+		if(turn_white()){
+			Game::is_white_turn = false;
+		} else{
+			Game::is_white_turn = true;
+		}
+		//TODO: move exposes check
 		/////////////////////////
 	}
 
