@@ -43,6 +43,48 @@ namespace Chess
 		// Returns true if the board has the right number of kings on it
 		bool has_valid_kings() const;
 
+
+		// TODO: iterator and const iterator
+		/*
+		class iterator {
+			Board* pos;
+
+		public:
+
+		iterator(Board* initial) : pos(inital) { }
+
+			iterator& operator++() {}
+
+			bool operator!=(const iterator& b) const {}
+
+			occ& operator*() { return }
+
+		}
+
+		iterator begin() {};
+
+		iterator begin() {};
+		
+		class const_iterator {
+			Board* pos;
+
+		public:
+
+		const_iterator(Board* initial) : pos(inital) { }
+
+			iterator& operator++() {}
+
+			bool operator!=(const iterator& b) const {}
+
+			occ& operator*() {}
+
+		}
+
+		const_iterator cbegin() const {};
+
+		const_iterator cbegin() const {};
+		*/
+
 	private:
 		// The sparse map storing the pieces, keyed off locations
 		std::map<Position, Piece*> occ;

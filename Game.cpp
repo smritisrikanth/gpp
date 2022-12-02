@@ -40,7 +40,7 @@ namespace Chess
 
 	void Game::make_move(const Position& start, const Position& end) {
 		/////////////////////////
-		// [REPLACE THIS STUB] //
+		board.operator(start);
 		/////////////////////////
 	}
 
