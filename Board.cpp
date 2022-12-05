@@ -15,6 +15,10 @@ namespace Chess
   /////////////////////////////////////
   Board::Board(){}
 
+  Board::Board(const Board& copy_board){
+    Board::occ = copy_board.occ; 
+  }
+
   const Piece* Board::operator()(const Position& position) const {
     /////////////////////////
     if(Board::occ.find(position) != Board::occ.end()){
