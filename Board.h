@@ -56,8 +56,6 @@ namespace Chess
 
 			iterator(Position* initial) : position(initial) { }
 
-			iterator& operator++() {}
-
 			bool operator!=(const iterator& a) {
 				return position->first != a.position->first || position->second != a.position->second;
 			}
@@ -66,14 +64,9 @@ namespace Chess
         		return *position;
       		}
 
-			iterator& operator++() {
-				if (position->first < 'H') {
-					(position->first)++;
-				}
-				else {
-					position->first = 'A';
-					(position->second)++;
-				}
+			iterator& operator++() { 
+				if (position->first < 'H') {(position->first)++;} 
+				else { position->first = 'A'; (position->second)++; } 
 				return *this;
 			}
       	};
