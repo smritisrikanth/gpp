@@ -105,10 +105,13 @@ namespace Chess
 
     // Return the total material point value of the designated player
     int Game::point_value(const bool& white) const {
-		/////////////////////////
-		// [REPLACE THIS STUB] //
-		/////////////////////////
-        return -1;
+		int total = 0;
+		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
+			if (white && board.operator()(*it)->is_white() || !white && !board.operator()(*it)->is_white()) {
+				total += board.operator()(*it)->point_value();
+			}
+		}
+		return total;
     }
 
 
