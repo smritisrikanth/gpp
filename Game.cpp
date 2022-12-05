@@ -52,9 +52,63 @@ namespace Chess
 			throw Exception("end position is not on board");
 		}
 
-		//TODO: check path
-		// i think we check path before if the beggining or end if valid, so that we don't capture a piece first
-		
+		// we might have to switch the order, im not sure
+		//vertical movement
+		if(start.first == end.first && curr_piece->legal_capture_shape(start, end)){
+			Position P;
+			P.first = start.first;
+			for (int i = 1; i < abs(start.second - end.second); i++){
+				if (start.second < end.second){
+					P.second = start.second + i;
+				}else{
+					P.second = start.second - i;
+				}
+				if(board.operator()(P)){
+					throw Exception("path is not clear");
+				}
+			}
+		}
+		//horizontal movement
+		else if (start.second == end.second && curr_piece->legal_capture_shape(start, end)){
+			Position P;
+			P.second = start.second;
+			for (int i = 1; i < abs(start.first - end.first); i++){
+				if (start.first < end.first){
+					P.first = start.first + i;
+				} else {
+					P.first = start.first - i;
+				}	
+				if(board.operator()(P)){
+					throw Exception("path is not clear");
+				}
+			}
+		}
+		//diagonal movement
+		else if ((start.first - end.first) == (start.second - end.second) && curr_piece->legal_capture_shape(start, end)){
+			Position P;
+			for (int i = 1; i < abs(start.second - end.second) - 1; i++){
+				if (start.first < end.first){ // to the right
+					if (start.second < end.second){ // up and right
+						P.first = start.first + i;
+						P.second = start.second + i;
+					} else { // down and right
+						P.first = start.first - i;
+						P.second = start.second + i;
+					}
+				} else { // to the left
+					if (start.second < end.second){ // up and left
+						P.first = start.first - i;
+						P.second = start.second + i;
+					} else { // down and left
+						P.first = start.first - i;
+						P.second = start.second - i;
+					}
+				}
+				if(board.operator()(P)){
+					throw Exception("path is not clear");
+				}
+			}
+		}
 
 		// Check if there is a piece
 		if(board.operator()(end)){
