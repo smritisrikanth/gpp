@@ -48,47 +48,44 @@ namespace Chess
 		void remove_piece(const Position& position);
 
 
-		// TODO: iterator and const iterator
-		/*
+
 		class iterator {
-			Board* pos;
+			Position* position;
 
 		public:
 
-		iterator(Board* initial) : pos(inital) { }
+			iterator(Position* initial) : position(initial) { }
 
 			iterator& operator++() {}
 
-			bool operator!=(const iterator& b) const {}
+			bool operator!=(const iterator& a) {
+				return position->first != a.position->first || position->second != a.position->second;
+			}
 
-			occ& operator*() { return }
+			Position& operator*() {
+        		return *position;
+      		}
 
+			iterator& operator++() {
+				if (position->first < 'H') {
+					(position->first)++;
+				}
+				else {
+					position->first = 'A';
+					(position->second)++;
+				}
+				return *this;
+			}
+      	};
+
+		iterator begin() {
+			Position *i; i->first = 'A'; i->second = 1; return iterator(i);
 		}
 
-		iterator begin() {};
-
-		iterator begin() {};
+		iterator end() {
+			Position *e; e->first = 'H'; e->second = 8; return iterator(e);
+		}
 		
-		class const_iterator {
-			Board* pos;
-
-		public:
-
-		const_iterator(Board* initial) : pos(inital) { }
-
-			iterator& operator++() {}
-
-			bool operator!=(const iterator& b) const {}
-
-			occ& operator*() {}
-
-		}
-
-		const_iterator cbegin() const {};
-
-		const_iterator cbegin() const {};
-		*/
-
 	private:
 		// The sparse map storing the pieces, keyed off locations
 		std::map<Position, Piece*> occ;
