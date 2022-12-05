@@ -59,7 +59,6 @@ namespace Chess
 				board.remove_piece(end);
 				board.add_piece(end, curr_piece->to_ascii());
 				board.remove_piece(start);
-
 			}else{
 				throw Exception("illegal capture shape");
 			}
@@ -71,6 +70,7 @@ namespace Chess
 				throw Exception ("illegal move shape");
 			}
 		}
+
 		if(turn_white()){
 			Game::is_white_turn = false;
 		} else{
@@ -116,7 +116,7 @@ namespace Chess
 		/////////////////////////
 		// [REPLACE THIS STUB] //
 		/////////////////////////
-		return is;
+		return is >> game.board >> ();
 	}
 
     /////////////////////////////////////
