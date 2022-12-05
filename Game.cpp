@@ -41,6 +41,7 @@ namespace Chess
 	void Game::make_move(const Position& start, const Position& end) {
 		/////////////////////////
 		const Piece* curr_piece = board.operator() (start);
+		// check if piece exists at position, and if start and end are valid
 		if (!curr_piece){
 			throw Exception("no piece at start position");
 		}
@@ -50,8 +51,14 @@ namespace Chess
 		if (!board.is_valid_position(end)){
 			throw Exception("end position is not on board");
 		}
+
+		//TODO: check path
+		// i think we check path before if the beggining or end if valid, so that we don't capture a piece first
 		
+
+		// Check if there is a piece
 		if(board.operator()(end)){
+			// then attempt to capture piece
 			if(curr_piece->is_white() == board.operator()(end)->is_white()){
 				throw Exception("cannot capture own piece");
 			}
@@ -63,6 +70,7 @@ namespace Chess
 				throw Exception("illegal capture shape");
 			}
 		} else{
+			// else attempt to move piece
 			if (curr_piece->legal_move_shape(start, end)){
 				board.remove_piece(start);
 				board.add_piece(end, curr_piece->to_ascii());
@@ -71,6 +79,7 @@ namespace Chess
 			}
 		}
 
+		// switch turn
 		if(turn_white()){
 			Game::is_white_turn = false;
 		} else{
@@ -83,6 +92,16 @@ namespace Chess
 	bool Game::in_check(const bool& white) const {
 		/////////////////////////
 		// [REPLACE THIS STUB] //
+		// I think for this, an efficient way for doing it is by having a small if statemnt
+		// for just switching between black and white, where can just add a variable to make the characters 
+		// for the piece representation lower case for black and upper case for white and then 
+		// only have to write the in_check implementation once
+		int black;
+		if (white){
+			black = 0;
+		} else{
+			black = 'a' - 'A';
+		}
 		/////////////////////////
 		return false;
 	}
