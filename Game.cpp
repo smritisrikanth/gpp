@@ -138,7 +138,17 @@ namespace Chess
 		/////////////////////////
 		// [REPLACE THIS STUB] //
 		/////////////////////////
-		return is >> game.board >> ();
+		char piece; 
+		while (piece != 'w' || piece != 'b'){
+			is >> piece;
+			board.add_piece(Position(), piece);
+		}
+		if (piece == 'w'){
+			this.is_white_turn = true;
+		} else {
+			this.is_white_turn = false;
+		}
+		return is;
 	}
 
     /////////////////////////////////////
