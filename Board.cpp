@@ -16,7 +16,9 @@ namespace Chess
   Board::Board(){}
 
   Board::Board(const Board& copy_board){
-    Board::occ = copy_board.occ; 
+      for (std::map<Position, Piece*>::const_iterator it = copy_board.occ.cbegin(); it != copy_board.occ.cend(); ++it){
+        this->occ.insert({{it->first}, it->second});
+      }
   }
 
   const Piece* Board::operator()(const Position& position) const {
