@@ -54,10 +54,10 @@ namespace Chess
 
 		// we might have to switch the order, im not sure
 		//vertical movement
-		if(start.first == end.first && curr_piece->legal_capture_shape(start, end)){
+		if(start.first == end.first && curr_piece->legal_move_shape(start, end)){
 			Position P;
 			P.first = start.first;
-			for (int i = 1; i < abs(start.second - end.second); i++){
+			for (int i = 1; i < abs(start.second - end.second) - 1; i++){
 				if (start.second < end.second){
 					P.second = start.second + i;
 				}else{
@@ -69,10 +69,10 @@ namespace Chess
 			}
 		}
 		//horizontal movement
-		else if (start.second == end.second && curr_piece->legal_capture_shape(start, end)){
+		else if (start.second == end.second && curr_piece->legal_move_shape(start, end)){
 			Position P;
 			P.second = start.second;
-			for (int i = 1; i < abs(start.first - end.first); i++){
+			for (int i = 1; i < abs(start.first - end.first) - 1; i++){
 				if (start.first < end.first){
 					P.first = start.first + i;
 				} else {
@@ -84,7 +84,7 @@ namespace Chess
 			}
 		}
 		//diagonal movement
-		else if ((start.first - end.first) == (start.second - end.second) && curr_piece->legal_capture_shape(start, end)){
+		else if ((start.first - end.first) == (start.second - end.second) && curr_piece->legal_move_shape(start, end)){
 			Position P;
 			for (int i = 1; i < abs(start.second - end.second) - 1; i++){
 				if (start.first < end.first){ // to the right
@@ -163,7 +163,9 @@ namespace Chess
 
 	bool Game::in_mate(const bool& white) const {
 		/////////////////////////
-		// [REPLACE THIS STUB] //
+		if (in_stalemate(white) && in_check(white)){
+			return true;
+		}
 		/////////////////////////
 		return false;
 	}
