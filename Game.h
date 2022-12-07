@@ -32,7 +32,7 @@ namespace Chess
     // Displays the game by printing it to stdout
 		void display() const { board.display(); }
     
-    /////////////////////////////////////
+        /////////////////////////////////////
 		// DO NOT MODIFY THIS FUNCTION!!!! //
 		/////////////////////////////////////
     // Checks if the game is valid
@@ -56,9 +56,9 @@ namespace Chess
 
 		std::vector<Position> possible_moves(Position& start) const;
 
-		bool path_clear(Position& start, Position& end) const;
+		bool path_clear(const Position& start, const Position& end) const;
 
-		bool is_legal_move(Position& start, Position& end) const;
+		bool is_legal_move(const Position& start, const Position& end) const;
 
 	private:
 		// The board

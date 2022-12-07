@@ -43,76 +43,9 @@ namespace Chess
 	}
 
 	void Game::make_move(const Position& start, const Position& end) {
-		/////////////////////////
-		const Piece* curr_piece = board.operator() (start);
-		// check if piece exists at position, and if start and end are valid
-		if (!curr_piece){
-			throw Exception("no piece at start position");
-		}
-		if (!board.is_valid_position(start)){
-			throw Exception("start position is not on board");
-		}
-		if (!board.is_valid_position(end)){
-			throw Exception("end position is not on board");
-		}
 
-		// we might have to switch the order, im not sure
-		//vertical movement
-		if(start.first == end.first && curr_piece->legal_move_shape(start, end)){
-			Position P;
-			P.first = start.first;
-			for (int i = 1; i < abs(start.second - end.second) - 1; i++){
-				if (start.second < end.second){
-					P.second = start.second + i;
-				}else{
-					P.second = start.second - i;
-				}
-				if(board.operator()(P)){
-					throw Exception("path is not clear");
-				}
-			}
-		}
-		//horizontal movement
-		else if (start.second == end.second && curr_piece->legal_move_shape(start, end)){
-			Position P;
-			P.second = start.second;
-			for (int i = 1; i < abs(start.first - end.first) - 1; i++){
-				if (start.first < end.first){
-					P.first = start.first + i;
-				} else {
-					P.first = start.first - i;
-				}	
-				if(board.operator()(P)){
-					throw Exception("path is not clear");
-				}
-			}
-		}
-		//diagonal movement
-		else if ((start.first - end.first) == (start.second - end.second) && curr_piece->legal_move_shape(start, end)){
-			Position P;
-			for (int i = 1; i < abs(start.second - end.second) - 1; i++){
-				if (start.first < end.first){ // to the right
-					if (start.second < end.second){ // up and right
-						P.first = start.first + i;
-						P.second = start.second + i;
-					} else { // down and right
-						P.first = start.first - i;
-						P.second = start.second + i;
-					}
-				} else { // to the left
-					if (start.second < end.second){ // up and left
-						P.first = start.first - i;
-						P.second = start.second + i;
-					} else { // down and left
-						P.first = start.first - i;
-						P.second = start.second - i;
-					}
-				}
-				if(board.operator()(P)){
-					throw Exception("path is not clear");
-				}
-			}
-		}
+		this->is_legal_move(start, end);
+		this->path_clear(start, end);
 
 		//check if exposes check
 		Game new_game = Game(*this);
@@ -145,8 +78,7 @@ namespace Chess
 		} else{
 			Game::is_white_turn = true;
 		}
-		//TODO: move exposes check
-		/////////////////////////
+		
 	}
 
 	bool Game::in_check(const bool& white) const {
@@ -156,9 +88,8 @@ namespace Chess
 				target = *it;
 			}
 		}
-		/////////////////////////
 		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
-			if (white && !board.operator()(*it)->is_white() || !white && board.operator()(*it)->is_white()) {
+			if ((white && !board.operator()(*it)->is_white()) || (!white && board.operator()(*it)->is_white())) {
 				if (is_legal_move(*it, target)) {
 					return true;
 				}
@@ -168,22 +99,17 @@ namespace Chess
 	}
 
 	bool Game::in_mate(const bool& white) const {
-		/////////////////////////
+		
 		if (in_stalemate(white) && in_check(white)){
 			return true;
 		}
-		/////////////////////////
 		return false;
 	}
 
 
 	bool Game::in_stalemate(const bool& white) const {
-		/////////////////////////
-		// [REPLACE THIS STUB] //
-		/////////////////////////
-
 		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
-			if (white && !board.operator()(*it)->is_white() || !white && board.operator()(*it)->is_white()) {
+			if ((white && !board.operator()(*it)->is_white()) || (!white && board.operator()(*it)->is_white())) {
 				std::vector<Position> moves = possible_moves(*it);
 				for (std::vector<Position>::iterator move = moves.begin(); move != moves.end(); ++move) {
 					Game new_game = Game(*this);
@@ -211,7 +137,7 @@ namespace Chess
     int Game::point_value(const bool& white) const {
 		int total = 0;
 		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
-			if (white && board.operator()(*it)->is_white() || !white && !board.operator()(*it)->is_white()) {
+			if ((white && board.operator()(*it)->is_white()) || (!white && !board.operator()(*it)->is_white())) {
 				total += board.operator()(*it)->point_value();
 			}
 		}
@@ -219,7 +145,7 @@ namespace Chess
     }
 
 	std::vector<Position> Game::possible_moves(Position& start) const {
-		const Piece* piece = board.operator() (start);
+
 		std::vector<Position> moves;
 		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
 			try {
@@ -234,7 +160,7 @@ namespace Chess
 	}
 
 	//must either remove exceptions or catch them when used
-	bool Game::path_clear(Position& start, Position& end) const{
+	bool Game::path_clear(const Position& start, const Position& end) const{
 		const Piece* curr_piece = board.operator() (start);
 		// we might have to switch the order, im not sure
 		//vertical movement
@@ -300,7 +226,7 @@ namespace Chess
 	}
 
 	//must either remove exceptions or catch them when used
-	bool Game::is_legal_move(Position& start, Position& end) const {
+	bool Game::is_legal_move(const Position& start, const Position& end) const {
 		const Piece* curr_piece = board.operator() (start);
 		if (!curr_piece){
 			throw Exception("no piece at start position");
@@ -341,9 +267,6 @@ namespace Chess
 
 
     std::istream& operator>>(std::istream& is, Game& game) {
-		/////////////////////////
-		// [REPLACE THIS STUB] //
-		/////////////////////////
 		char piece_desig; 
 		Board::iterator it = game.board.begin();
 		while (piece_desig != 'w' || piece_desig != 'b'){
