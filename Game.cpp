@@ -115,35 +115,28 @@ namespace Chess
 		}
 
 		//check if exposes check
-		Board old_board = Board(board);
+		Game new_game = Game(*this);
 
-
-		// Check if there is a piece
-		if(board.operator()(end)){
-			// then attempt to capture piece
-			if(curr_piece->is_white() == board.operator()(end)->is_white()){
-				throw Exception("cannot capture own piece");
-			}
-			if(curr_piece->legal_capture_shape(start, end)){
-				board.remove_piece(end);
-				board.add_piece(end, curr_piece->to_ascii());
-				board.remove_piece(start);
-			}else{
-				throw Exception("illegal capture shape");
-			}
+		if(new_game.board.operator()(end)) {
+			new_game.board.remove_piece(end);
+			new_game.board.add_piece(end, new_game.board.operator()(start)->to_ascii());
+			new_game.board.remove_piece(start);
 		} else{
-			// else attempt to move piece
-			if (curr_piece->legal_move_shape(start, end)){
-				board.remove_piece(start);
-				board.add_piece(end, curr_piece->to_ascii());
-			}else {
-				throw Exception ("illegal move shape");
-			}
+			new_game.board.remove_piece(start);
+			new_game.board.add_piece(end, new_game.board.operator()(start)->to_ascii());
 		}
 
-		if (in_check(Game::is_white_turn)) {
-			board = Board(old_board);
+		if (new_game.in_check(Game::is_white_turn)) {
 			throw Exception ("move exposes check");
+		}
+
+		if(board.operator()(end)) {
+			board.remove_piece(end);
+			board.add_piece(end, board.operator()(start)->to_ascii());
+			board.remove_piece(start);
+		} else{
+			board.remove_piece(start);
+			board.add_piece(end, board.operator()(start)->to_ascii());
 		}
 
 		// switch turn
@@ -194,14 +187,25 @@ namespace Chess
 				std::vector<Position> moves = possible_moves(*it);
 				for (std::vector<Position>::iterator move = moves.begin(); move != moves.end(); ++move) {
 					Game new_game = Game(*this);
+
+					if(new_game.board.operator()(*move)) {
+						new_game.board.remove_piece(*move);
+						new_game.board.add_piece(*move, new_game.board.operator()(*it)->to_ascii());
+						new_game.board.remove_piece(*it);
+					} else{
+						new_game.board.remove_piece(*it);
+						new_game.board.add_piece(*move, new_game.board.operator()(*it)->to_ascii());
+					}
+					if (!new_game.in_check(white)) {
+						return false;
+					}
 				}
 			}
 		}
-
-		//iterate through pieces on board, for each piece of same color iterate through possible moves
-		//check if vector returned is empty
-		return false;
+		return true;
 	}
+
+	
 
     // Return the total material point value of the designated player
     int Game::point_value(const bool& white) const {
