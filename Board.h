@@ -69,17 +69,17 @@ namespace Chess
 
 			iterator& operator++() { 
 				if (position->first < 'H') {(position->first)++;} 
-				else { position->first = 'A'; (position->second)++; } 
+				else { position->first = 'A'; (position->second)--; } 
 				return *this;
 			}
       	};
 
 		iterator begin() const {
-			Position *i; i->first = 'A'; i->second = 1; return iterator(i);
+			Position *i; i->first = 'A'; i->second = 8; return iterator(i);
 		}
 
 		iterator end() const {
-			Position *e; e->first = 'H'; e->second = 8; return iterator(e);
+			Position *e; e->first = 'H'; e->second = 1; return iterator(e);
 		}
 		
 	private:

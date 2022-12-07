@@ -190,19 +190,23 @@ namespace Chess
     }
 
 
-      std::istream& operator>> (std::istream& is, Game& game) {
+      std::istream& operator>>(std::istream& is, Game& game) {
 		/////////////////////////
 		// [REPLACE THIS STUB] //
 		/////////////////////////
-		char piece; 
-		while (piece != 'w' || piece != 'b'){
-			is >> piece;
-			board.add_piece(Position(), piece);
+		char piece_desig; 
+		Board::iterator it = game.board.begin();
+		while (piece_desig != 'w' || piece_desig != 'b'){
+			is >> piece_desig;
+			++it;
+			if (piece_desig != '-') {
+				(game.board).add_piece(*it, piece_desig);
+			}
 		}
-		if (piece == 'w'){
-			this.is_white_turn = true;
-		} else {
-			this.is_white_turn = false;
+		if (piece_desig == 'w'){
+			game.is_white_turn = true;
+		} else if (piece_desig == 'b') {
+			game.is_white_turn = false;
 		}
 		return is;
 	}
