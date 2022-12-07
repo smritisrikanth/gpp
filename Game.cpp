@@ -154,11 +154,6 @@ namespace Chess
 
 	bool Game::in_check(const bool& white) const {
 		/////////////////////////
-		// [REPLACE THIS STUB] //
-		// I think for this, an efficient way for doing it is by having a small if statemnt
-		// for just switching between black and white, where can just add a variable to make the characters 
-		// for the piece representation lower case for black and upper case for white and then 
-		// only have to write the in_check implementation once
 		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
 			if (white && !board.operator()(*it)->is_white() || !white && board.operator()(*it)->is_white()) {
 				std::vector<Position> moves = possible_moves(*it);
