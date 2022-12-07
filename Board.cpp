@@ -45,10 +45,35 @@ namespace Chess
   }
 
   void Board::display() const {
-    /////////////////////////
-    // [REPLACE THIS STUB] //
-    /////////////////////////
+    std::cout << "a b c d e f g h" << std::endl;
+    int row_num = 0;
+    int col_num = 0;
+    for(char r = '8'; r >= '1'; r--) {
+      std::cout << r;
+      for(char c = 'A'; c <= 'H'; c++) {
+        if ((row_num % 2 == 0 && col_num % 2 == 0) || (row_num % 2 == 1 && col_num % 2 == 1)) {
+          Terminal::color_bg(Terminal::WHITE);
+        } else {
+          Terminal::color_bg(Terminal::BLACK);
+        }
+        const Piece* piece = board(Position(c, r));
+        if (piece && piece->is_white()) {
+          Terminal::color_fg(true, Terminal::WHITE);
+          std::cout << piece->to_unicode();
+        } else if (piece && !(piece->is_white())) {
+          Terminal::color_fg(true, Terminal::BLACK);
+          std::cout << piece->to_unicode();
+        } else {
+          std::out << " ";
+        }
+      }
+      Terminal::set_default();
+      std::cout << r << std::endl;
+    }
+    std::cout << "a b c d e f g h" << std::endl;
+ 
   }
+
 
   bool Board::has_valid_kings() const {
     int white_king_count = 0;
@@ -70,7 +95,7 @@ namespace Chess
     return (white_king_count == 1) && (black_king_count == 1);
   }
 
-  bool Board::is_valid_position(const Position& position) const {
+  bool is_valid_position(const Position& position) const {
     return (position.first >= 'A' && position.first <= 'H' && position.second >= 1 && position.second <= 8);
   }
 
