@@ -157,6 +157,9 @@ namespace Chess
 			black = 'a' - 'A';
 		}
 		/////////////////////////
+
+		//iterate through pieces on board, for each piece of opposite color iterate through possible moves
+		//check if any of the positions returned have a king in them
 		return false;
 	}
 
@@ -175,6 +178,11 @@ namespace Chess
 		/////////////////////////
 		// [REPLACE THIS STUB] //
 		/////////////////////////
+
+		
+
+		//iterate through pieces on board, for each piece of same color iterate through possible moves
+		//check if vector returned is empty
 		return false;
 	}
 
