@@ -53,9 +53,9 @@ namespace Chess
 
 		std::vector<Position> possible_moves(Position& start);
 
-		bool Game::path_clear(Position& start, Position& end);
+		bool path_clear(Position& start, Position& end);
 
-		bool Game::is_legal_move(Position& start, Position& end);
+		bool is_legal_move(Position& start, Position& end);
 
 	private:
 		// The board
