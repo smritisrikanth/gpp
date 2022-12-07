@@ -110,6 +110,10 @@ namespace Chess
 			}
 		}
 
+		//check if exposes check
+		Board old_board = Board(board);
+
+
 		// Check if there is a piece
 		if(board.operator()(end)){
 			// then attempt to capture piece
@@ -131,6 +135,11 @@ namespace Chess
 			}else {
 				throw Exception ("illegal move shape");
 			}
+		}
+
+		if (in_check(Game::is_white_turn)) {
+			board = Board(old_board);
+			throw Exception ("move exposes check");
 		}
 
 		// switch turn
@@ -294,24 +303,43 @@ namespace Chess
 			return false;
 		}
 
+		Board old_board = Board(board);
+
+
+		// Check if there is a piece
 		if(board.operator()(end)){
 			// then attempt to capture piece
 			if(curr_piece->is_white() == board.operator()(end)->is_white()){
 				throw Exception("cannot capture own piece");
 				return false;
 			}
-			if(!(curr_piece->legal_capture_shape(start, end))){
+			if(curr_piece->legal_capture_shape(start, end)){
+				board.remove_piece(end);
+				board.add_piece(end, curr_piece->to_ascii());
+				board.remove_piece(start);
+			}else{
 				throw Exception("illegal capture shape");
 				return false;
 			}
 		} else{
 			// else attempt to move piece
-			if (!(curr_piece->legal_move_shape(start, end))){
+			if (curr_piece->legal_move_shape(start, end)){
+				board.remove_piece(start);
+				board.add_piece(end, curr_piece->to_ascii());
+			}else {
 				throw Exception ("illegal move shape");
 				return false;
 			}
 		}
-		//TODO: in_check
+
+		if (in_check(Game::is_white_turn)) {
+			throw Exception ("move exposes check");
+			return false;
+		}
+
+		board = Board(old_board);
+
+
 		return true;
 	}
 
