@@ -56,7 +56,7 @@ namespace Chess
         } else {
           Terminal::color_bg(Terminal::BLACK);
         }
-        const Piece* piece = board(Position(c, r));
+        const Piece* piece = this->operator()(Position(c, r));
         if (piece && piece->is_white()) {
           Terminal::color_fg(true, Terminal::WHITE);
           std::cout << piece->to_unicode();
@@ -64,7 +64,7 @@ namespace Chess
           Terminal::color_fg(true, Terminal::BLACK);
           std::cout << piece->to_unicode();
         } else {
-          std::out << " ";
+          std::cout << " ";
         }
       }
       Terminal::set_default();
@@ -95,7 +95,7 @@ namespace Chess
     return (white_king_count == 1) && (black_king_count == 1);
   }
 
-  bool is_valid_position(const Position& position) const {
+  bool Board::is_valid_position(const Position& position) const {
     return (position.first >= 'A' && position.first <= 'H' && position.second >= 1 && position.second <= 8);
   }
 

@@ -42,8 +42,6 @@ namespace Chess
 		// Returns true if the designated player is in check
 		bool in_check(const bool& white) const;
 
-		bool Game::in_check(const bool& white, Board& board) const;
-
 		// Returns true if the designated player is in mate
 		bool in_mate(const bool& white) const;
 
