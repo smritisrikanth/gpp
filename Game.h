@@ -42,6 +42,8 @@ namespace Chess
 		// Returns true if the designated player is in check
 		bool in_check(const bool& white) const;
 
+		bool Game::in_check(const bool& white, Board& board) const;
+
 		// Returns true if the designated player is in mate
 		bool in_mate(const bool& white) const;
 
@@ -51,11 +53,11 @@ namespace Chess
         // Return the total material point value of the designated player
         int point_value(const bool& white) const;
 
-		std::vector<Position> possible_moves(Position& start);
+		std::vector<Position> possible_moves(Position& start) const;
 
-		bool path_clear(Position& start, Position& end);
+		bool path_clear(Position& start, Position& end) const;
 
-		bool is_legal_move(Position& start, Position& end);
+		bool is_legal_move(Position& start, Position& end) const;
 
 	private:
 		// The board

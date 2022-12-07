@@ -46,7 +46,7 @@ namespace Chess
 		// Returns true if the board has the right number of kings on it
 		bool has_valid_kings() const;
 
-		bool is_valid_position(const Position& position);
+		bool is_valid_position(const Position& position) const;
 
 		void remove_piece(const Position& position);
 

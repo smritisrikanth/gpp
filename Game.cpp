@@ -159,19 +159,20 @@ namespace Chess
 		// for just switching between black and white, where can just add a variable to make the characters 
 		// for the piece representation lower case for black and upper case for white and then 
 		// only have to write the in_check implementation once
-		int black;
-		if (white){
-			black = 0;
-		} else{
-			black = 'a' - 'A';
+		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
+			if (white && !board.operator()(*it)->is_white() || !white && board.operator()(*it)->is_white()) {
+				std::vector<Position> moves = possible_moves(*it);
+				for (std::vector<Position>::iterator move = moves.begin(); move != moves.end(); ++move) {
+					if(board.operator()(*move)->to_ascii() == 'k' || board.operator()(*move)->to_ascii() == 'K') {
+						return true;
+					}
+				}
+			}
 		}
-		/////////////////////////
-
 		//iterate through pieces on board, for each piece of opposite color iterate through possible moves
 		//check if any of the positions returned have a king in them
 		return false;
 	}
-
 
 	bool Game::in_mate(const bool& white) const {
 		/////////////////////////
@@ -188,7 +189,14 @@ namespace Chess
 		// [REPLACE THIS STUB] //
 		/////////////////////////
 
-		
+		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
+			if (white && !board.operator()(*it)->is_white() || !white && board.operator()(*it)->is_white()) {
+				std::vector<Position> moves = possible_moves(*it);
+				for (std::vector<Position>::iterator move = moves.begin(); move != moves.end(); ++move) {
+					
+				}
+			}
+		}
 
 		//iterate through pieces on board, for each piece of same color iterate through possible moves
 		//check if vector returned is empty
@@ -206,7 +214,7 @@ namespace Chess
 		return total;
     }
 
-	std::vector<Position> Game::possible_moves(Position& start) {
+	std::vector<Position> Game::possible_moves(Position& start) const {
 		const Piece* piece = board.operator() (start);
 		std::vector<Position> moves;
 		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
@@ -222,7 +230,7 @@ namespace Chess
 	}
 
 	//must either remove exceptions or catch them when used
-	bool Game::path_clear(Position& start, Position& end) {
+	bool Game::path_clear(Position& start, Position& end) const{
 		const Piece* curr_piece = board.operator() (start);
 		// we might have to switch the order, im not sure
 		//vertical movement
@@ -288,7 +296,7 @@ namespace Chess
 	}
 
 	//must either remove exceptions or catch them when used
-	bool Game::is_legal_move(Position& start, Position& end) {
+	bool Game::is_legal_move(Position& start, Position& end) const {
 		const Piece* curr_piece = board.operator() (start);
 		if (!curr_piece){
 			throw Exception("no piece at start position");
@@ -303,8 +311,6 @@ namespace Chess
 			return false;
 		}
 
-		Board old_board = Board(board);
-
 
 		// Check if there is a piece
 		if(board.operator()(end)){
@@ -313,31 +319,17 @@ namespace Chess
 				throw Exception("cannot capture own piece");
 				return false;
 			}
-			if(curr_piece->legal_capture_shape(start, end)){
-				board.remove_piece(end);
-				board.add_piece(end, curr_piece->to_ascii());
-				board.remove_piece(start);
-			}else{
+			if(!curr_piece->legal_capture_shape(start, end)){
 				throw Exception("illegal capture shape");
 				return false;
 			}
 		} else{
 			// else attempt to move piece
-			if (curr_piece->legal_move_shape(start, end)){
-				board.remove_piece(start);
-				board.add_piece(end, curr_piece->to_ascii());
-			}else {
+			if (!curr_piece->legal_move_shape(start, end)){
 				throw Exception ("illegal move shape");
 				return false;
 			}
 		}
-
-		if (in_check(Game::is_white_turn)) {
-			throw Exception ("move exposes check");
-			return false;
-		}
-
-		board = Board(old_board);
 
 
 		return true;

@@ -70,7 +70,7 @@ namespace Chess
     return (white_king_count == 1) && (black_king_count == 1);
   }
 
-  bool is_valid_position(const Position& position) {
+  bool Board::is_valid_position(const Position& position) const {
     return (position.first >= 'A' && position.first <= 'H' && position.second >= 1 && position.second <= 8);
   }
 
