@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <iostream>
+#include <vector>
 #include "Piece.h"
 #include "Board.h"
 #include "Exceptions.h"
@@ -49,6 +50,12 @@ namespace Chess
 
         // Return the total material point value of the designated player
         int point_value(const bool& white) const;
+
+		std::vector<Position> possible_moves(Position& start);
+
+		bool Game::path_clear(Position& start, Position& end);
+
+		bool Game::is_legal_move(Position& start, Position& end);
 
 	private:
 		// The board

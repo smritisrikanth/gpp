@@ -189,8 +189,126 @@ namespace Chess
 		return total;
     }
 
+	std::vector<Position> Game::possible_moves(Position& start) {
+		const Piece* piece = board.operator() (start);
+		std::vector<Position> moves;
+		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
+			try {
+				if (is_legal_move(start, *it)) {
+					moves.push_back(*it);
+				}
+			} catch (Exception& ex) {
+				
+			}
+		}
+		return moves;
+	}
 
-      std::istream& operator>>(std::istream& is, Game& game) {
+	//must either remove exceptions or catch them when used
+	bool Game::path_clear(Position& start, Position& end) {
+		const Piece* curr_piece = board.operator() (start);
+		// we might have to switch the order, im not sure
+		//vertical movement
+		if(start.first == end.first && curr_piece->legal_move_shape(start, end)){
+			Position P;
+			P.first = start.first;
+			for (int i = 1; i < abs(start.second - end.second) - 1; i++){
+				if (start.second < end.second){
+					P.second = start.second + i;
+				}else{
+					P.second = start.second - i;
+				}
+				if(board.operator()(P)){
+					throw Exception("path is not clear");
+					return false;
+				}
+			}
+		}
+		//horizontal movement
+		else if (start.second == end.second && curr_piece->legal_move_shape(start, end)){
+			Position P;
+			P.second = start.second;
+			for (int i = 1; i < abs(start.first - end.first) - 1; i++){
+				if (start.first < end.first){
+					P.first = start.first + i;
+				} else {
+					P.first = start.first - i;
+				}	
+				if(board.operator()(P)){
+					throw Exception("path is not clear");
+					return false;
+				}
+			}
+		}
+		//diagonal movement
+		else if ((start.first - end.first) == (start.second - end.second) && curr_piece->legal_move_shape(start, end)){
+			Position P;
+			for (int i = 1; i < abs(start.second - end.second) - 1; i++){
+				if (start.first < end.first){ // to the right
+					if (start.second < end.second){ // up and right
+						P.first = start.first + i;
+						P.second = start.second + i;
+					} else { // down and right
+						P.first = start.first - i;
+						P.second = start.second + i;
+					}
+				} else { // to the left
+					if (start.second < end.second){ // up and left
+						P.first = start.first - i;
+						P.second = start.second + i;
+					} else { // down and left
+						P.first = start.first - i;
+						P.second = start.second - i;
+					}
+				}
+				if(board.operator()(P)){
+					throw Exception("path is not clear");
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	//must either remove exceptions or catch them when used
+	bool Game::is_legal_move(Position& start, Position& end) {
+		const Piece* curr_piece = board.operator() (start);
+		if (!curr_piece){
+			throw Exception("no piece at start position");
+			return false;
+		}
+		if (!board.is_valid_position(start)){
+			throw Exception("start position is not on board");
+			return false;
+		}
+		if (!board.is_valid_position(end)){
+			throw Exception("end position is not on board");
+			return false;
+		}
+
+		if(board.operator()(end)){
+			// then attempt to capture piece
+			if(curr_piece->is_white() == board.operator()(end)->is_white()){
+				throw Exception("cannot capture own piece");
+				return false;
+			}
+			if(!(curr_piece->legal_capture_shape(start, end))){
+				throw Exception("illegal capture shape");
+				return false;
+			}
+		} else{
+			// else attempt to move piece
+			if (!(curr_piece->legal_move_shape(start, end))){
+				throw Exception ("illegal move shape");
+				return false;
+			}
+		}
+		//TODO: in_check
+		return true;
+	}
+
+
+    std::istream& operator>>(std::istream& is, Game& game) {
 		/////////////////////////
 		// [REPLACE THIS STUB] //
 		/////////////////////////
