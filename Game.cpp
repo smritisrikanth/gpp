@@ -3,6 +3,10 @@
 
 namespace Chess
 {
+	Game::Game(const Game& copy_game) {
+		board = Board(copy_game.board);
+		is_white_turn = copy_game.is_white_turn;
+	}
 	/////////////////////////////////////
 	// DO NOT MODIFY THIS FUNCTION!!!! //
 	/////////////////////////////////////
@@ -153,19 +157,20 @@ namespace Chess
 	}
 
 	bool Game::in_check(const bool& white) const {
+		Position& target = *(board.begin());
+		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
+			if ((white && board.operator()(*it)->to_ascii() == 'K') || (!white && board.operator()(*it)->to_ascii() == 'k')) {
+				target = *it;
+			}
+		}
 		/////////////////////////
 		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
 			if (white && !board.operator()(*it)->is_white() || !white && board.operator()(*it)->is_white()) {
-				std::vector<Position> moves = possible_moves(*it);
-				for (std::vector<Position>::iterator move = moves.begin(); move != moves.end(); ++move) {
-					if(board.operator()(*move)->to_ascii() == 'k' || board.operator()(*move)->to_ascii() == 'K') {
-						return true;
-					}
+				if (is_legal_move(*it, target)) {
+					return true;
 				}
 			}
 		}
-		//iterate through pieces on board, for each piece of opposite color iterate through possible moves
-		//check if any of the positions returned have a king in them
 		return false;
 	}
 
@@ -188,7 +193,7 @@ namespace Chess
 			if (white && !board.operator()(*it)->is_white() || !white && board.operator()(*it)->is_white()) {
 				std::vector<Position> moves = possible_moves(*it);
 				for (std::vector<Position>::iterator move = moves.begin(); move != moves.end(); ++move) {
-					
+					Game new_game = Game(*this);
 				}
 			}
 		}

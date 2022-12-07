@@ -17,6 +17,9 @@ namespace Chess
 		// piece positions, and sets the state to white's turn
 		Game();
 
+		//copy constructor
+		Game(const Game& copy_game);
+
 		// Returns true if it is white's turn
 		/////////////////////////////////////
 		// DO NOT MODIFY THIS FUNCTION!!!! //
