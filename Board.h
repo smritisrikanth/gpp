@@ -53,37 +53,37 @@ namespace Chess
 
 
 		class iterator {
-			Position* position;
+			Position position;
 
 		public:
 			// make a default constructor -> need to define pointer to position
 			//iterator() { 
 			//	*position = std::make_pair('A', '8');
 			//}
-			iterator(Position* initial) : position(initial) { }
+			iterator(Position p) : position(p) { }
 			// initial is passed as address vs a pair, try to pass as a pair instead			
 
 			bool operator!=(const iterator& a) {
-				return position->first != a.position->first || position->second != a.position->second;
+				return position.first != a.position.first || position.second != a.position.second;
 			}
 
 			Position& operator*() {
-        		return *position;
+        		return position;
       		}
 
 			iterator& operator++() { 
-				if (position->first < 'H') {(position->first)++;} 
-				else { position->first = 'A'; (position->second)--; } 
+				if (position.first < 'H') {(position.first)++;} 
+				else { position.first = 'A'; (position.second)--; } 
 				return *this;
 			}
       	};
 
 		iterator begin() const {
-			Position i; i.first = 'A'; i.second = '8'; return iterator(&i);
+			Position i = std::make_pair('A', '8'); return iterator(i);
 		}
 
 		iterator end() const {
-			Position e; e.first = 'H'; e.second = '1'; return iterator(&e);
+			Position e = std::make_pair('H', '1'); return iterator(e);
 		}
 		
 	private:
