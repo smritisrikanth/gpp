@@ -49,14 +49,28 @@ namespace Chess
 
 		//check if exposes check
 		Game new_game = Game(*this);
+		const Piece* curr_piece = new_game.board(start);
 
 		if(new_game.board(end)) {
-			new_game.board.remove_piece(end);
-			new_game.board.add_piece(end, new_game.board(start)->to_ascii());
-			new_game.board.remove_piece(start);
+			if(curr_piece->is_white() == board(end)->is_white()){
+				throw Exception("cannot capture own piece");
+				
+			} else if (!curr_piece->legal_capture_shape(start, end)){
+				throw Exception("illegal capture shape");
+				
+			} else {
+				new_game.board.remove_piece(end);
+				new_game.board.add_piece(end, new_game.board(start)->to_ascii());
+				new_game.board.remove_piece(start);
+			}
 		} else{
-			new_game.board.remove_piece(start);
-			new_game.board.add_piece(end, new_game.board(start)->to_ascii());
+			if (!curr_piece->legal_move_shape(start, end)){
+				throw Exception ("illegal move shape");
+				
+			} else {
+				new_game.board.remove_piece(start);
+				new_game.board.add_piece(end, new_game.board(start)->to_ascii());
+			}
 		}
 
 		if (new_game.in_check(Game::is_white_turn)) {
@@ -249,27 +263,6 @@ namespace Chess
 			throw Exception("end position is not on board");
 			return false;
 		}
-
-
-		// Check if there is a piece
-		if(board(end)){
-			// then attempt to capture piece
-			if(curr_piece->is_white() == board(end)->is_white()){
-				throw Exception("cannot capture own piece");
-				return false;
-			}
-			if(!curr_piece->legal_capture_shape(start, end)){
-				throw Exception("illegal capture shape");
-				return false;
-			}
-		} else{
-			// else attempt to move piece
-			if (!curr_piece->legal_move_shape(start, end)){
-				throw Exception ("illegal move shape");
-				return false;
-			}
-		}
-
 
 		return true;
 	}
