@@ -84,14 +84,18 @@ namespace Chess
 	bool Game::in_check(const bool& white) const {
 		Position& target = *(board.begin());
 		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
-			if ((white && board(*it)->to_ascii() == 'K') || (!white && board(*it)->to_ascii() == 'k')) {
-				target = *it;
+			if (board(*it)) {
+				if ((white && board(*it)->to_ascii() == 'K') || (!white && board(*it)->to_ascii() == 'k')) {
+					target = *it;
+				}
 			}
 		}
 		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
-			if ((white && !board(*it)->is_white()) || (!white && board(*it)->is_white())) {
-				if (is_legal_move(*it, target)) {
-					return true;
+			if (board(*it)) {
+				if ((white && !board(*it)->is_white()) || (!white && board(*it)->is_white())) {
+					if (is_legal_move(*it, target)) {
+						return true;
+					}
 				}
 			}
 		}
@@ -109,21 +113,24 @@ namespace Chess
 
 	bool Game::in_stalemate(const bool& white) const {
 		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
-			if ((white && !board(*it)->is_white()) || (!white && board(*it)->is_white())) {
-				std::vector<Position> moves = possible_moves(*it);
-				for (std::vector<Position>::iterator move = moves.begin(); move != moves.end(); ++move) {
-					Game new_game = Game(*this);
+			if (board(*it)) {
+				if ((white && !board(*it)->is_white()) || (!white && board(*it)->is_white())) {
+					std::vector<Position> moves = possible_moves(*it);
+					for (std::vector<Position>::iterator move = moves.begin(); move != moves.end(); ++move) {
+						Game new_game = Game(*this);
 
-					if(new_game.board(*move)) {
-						new_game.board.remove_piece(*move);
-						new_game.board.add_piece(*move, new_game.board(*it)->to_ascii());
-						new_game.board.remove_piece(*it);
-					} else{
-						new_game.board.remove_piece(*it);
-						new_game.board.add_piece(*move, new_game.board(*it)->to_ascii());
-					}
-					if (!new_game.in_check(white)) {
-						return false;
+						if(new_game.board(*move)) {
+							new_game.board.remove_piece(*move);
+							new_game.board.add_piece(*move, new_game.board(*it)->to_ascii());
+							new_game.board.remove_piece(*it);
+						} else{
+							
+							new_game.board.add_piece(*move, new_game.board(*it)->to_ascii());
+							new_game.board.remove_piece(*it);
+						}
+						if (!new_game.in_check(white)) {
+							return false;
+						}
 					}
 				}
 			}
@@ -137,8 +144,10 @@ namespace Chess
     int Game::point_value(const bool& white) const {
 		int total = 0;
 		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
-			if ((white && board(*it)->is_white()) || (!white && !board(*it)->is_white())) {
-				total += board(*it)->point_value();
+			if (board(*it)) {
+				if ((white && board(*it)->is_white()) || (!white && !board(*it)->is_white())) {
+					total += board(*it)->point_value();
+				}
 			}
 		}
 		return total;
