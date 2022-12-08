@@ -44,33 +44,46 @@ namespace Chess
 
 	void Game::make_move(const Position& start, const Position& end) {
 
-		this->is_legal_move(start, end);
-		this->path_clear(start, end);
+		const Piece* curr_piece = board(start);
+		if (!is_legal_move(start, end)) {
+			if (!curr_piece){
+			throw Exception("no piece at start position");
+			}
+			if (!board.is_valid_position(start)){
+				throw Exception("start position is not on board");
+			}
+			if (!board.is_valid_position(end)){
+				throw Exception("end position is not on board");
+			}
+			if (board(end)) {
+				if(curr_piece->is_white() == board(end)->is_white()){
+					throw Exception("cannot capture own piece");
+				}
+				if (!curr_piece->legal_capture_shape(start, end)){
+					throw Exception("illegal capture shape");
+				}
+			} else {
+				if (!curr_piece->legal_move_shape(start, end)){
+					throw Exception ("illegal move shape");
+				}
+			}
+			if (!path_clear(start,end)) {
+				throw Exception("path is not clear");
+			}
+		}
+
+
 
 		//check if exposes check
 		Game new_game = Game(*this);
-		const Piece* curr_piece = new_game.board(start);
 
 		if(new_game.board(end)) {
-			if(curr_piece->is_white() == board(end)->is_white()){
-				throw Exception("cannot capture own piece");
-				
-			} else if (!curr_piece->legal_capture_shape(start, end)){
-				throw Exception("illegal capture shape");
-				
-			} else {
-				new_game.board.remove_piece(end);
-				new_game.board.add_piece(end, new_game.board(start)->to_ascii());
-				new_game.board.remove_piece(start);
-			}
-		} else{
-			if (!curr_piece->legal_move_shape(start, end)){
-				throw Exception ("illegal move shape");
-				
-			} else {
-				new_game.board.remove_piece(start);
-				new_game.board.add_piece(end, new_game.board(start)->to_ascii());
-			}
+			new_game.board.remove_piece(end);
+			new_game.board.add_piece(end, new_game.board(start)->to_ascii());
+			new_game.board.remove_piece(start);
+		} else {
+			new_game.board.remove_piece(start);
+			new_game.board.add_piece(end, new_game.board(start)->to_ascii());
 		}
 
 		if (new_game.in_check(Game::is_white_turn)) {
@@ -197,7 +210,6 @@ namespace Chess
 					P.second = start.second - i;
 				}
 				if(board(P)){
-					throw Exception("path is not clear");
 					return false;
 				}
 			}
@@ -213,7 +225,6 @@ namespace Chess
 					P.first = start.first - i;
 				}	
 				if(board(P)){
-					throw Exception("path is not clear");
 					return false;
 				}
 			}
@@ -240,7 +251,6 @@ namespace Chess
 					}
 				}
 				if(board(P)){
-					throw Exception("path is not clear");
 					return false;
 				}
 			}
@@ -252,15 +262,28 @@ namespace Chess
 	bool Game::is_legal_move(const Position& start, const Position& end) const {
 		const Piece* curr_piece = board(start);
 		if (!curr_piece){
-			throw Exception("no piece at start position");
 			return false;
 		}
 		if (!board.is_valid_position(start)){
-			throw Exception("start position is not on board");
 			return false;
 		}
 		if (!board.is_valid_position(end)){
-			throw Exception("end position is not on board");
+			return false;
+		}
+
+		if(board(end)) {
+			if(curr_piece->is_white() == board(end)->is_white()){
+				return false;
+			} else if (!curr_piece->legal_capture_shape(start, end)){
+				return false;
+			}
+		} else {
+			if (!curr_piece->legal_move_shape(start, end)){
+				return false;
+			}
+		}
+
+		if (!path_clear(start,end)) {
 			return false;
 		}
 
