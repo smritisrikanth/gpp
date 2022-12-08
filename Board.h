@@ -56,8 +56,12 @@ namespace Chess
 			Position* position;
 
 		public:
-
+			// make a default constructor -> need to define pointer to position
+			//iterator() { 
+			//	*position = std::make_pair('A', '8');
+			//}
 			iterator(Position* initial) : position(initial) { }
+			// initial is passed as address vs a pair, try to pass as a pair instead			
 
 			bool operator!=(const iterator& a) {
 				return position->first != a.position->first || position->second != a.position->second;
