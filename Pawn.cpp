@@ -7,7 +7,7 @@ namespace Chess
             return false;
         }
         if(Pawn::is_white()){
-            if(start.second == 2){
+            if(start.second == '2'){
                 if((end.second - start.second == 2 || end.second - start.second == 1) && start.first == end.first){
                     return true;
                 }
@@ -18,7 +18,7 @@ namespace Chess
             }
             return false;
         }else {
-            if(start.second == 7){
+            if(start.second == '7'){
                 if((start.second - end.second == 2 || start.second - end.second == 1) && start.first == end.first){
                     return true;
                 }
