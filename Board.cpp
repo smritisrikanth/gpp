@@ -38,7 +38,7 @@ namespace Chess
     else if (!is_valid_position(position)) {
       throw Exception("invalid position");
     }
-    else if (operator()(position) != NULL) {
+    else if ((*this)(position) != NULL) {
       throw Exception("position is occupied");
     }
     occ[position] = piece;
@@ -56,7 +56,7 @@ namespace Chess
         } else {
           Terminal::color_bg(Terminal::BLACK);
         }
-        const Piece* piece = this->operator()(Position(c, r));
+        const Piece* piece = (*this)(Position(c, r));
         if (piece && piece->is_white()) {
           Terminal::color_fg(true, Terminal::WHITE);
           std::cout << piece->to_unicode() << " ";

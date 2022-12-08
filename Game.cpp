@@ -50,26 +50,26 @@ namespace Chess
 		//check if exposes check
 		Game new_game = Game(*this);
 
-		if(new_game.board.operator()(end)) {
+		if(new_game.board(end)) {
 			new_game.board.remove_piece(end);
-			new_game.board.add_piece(end, new_game.board.operator()(start)->to_ascii());
+			new_game.board.add_piece(end, new_game.board(start)->to_ascii());
 			new_game.board.remove_piece(start);
 		} else{
 			new_game.board.remove_piece(start);
-			new_game.board.add_piece(end, new_game.board.operator()(start)->to_ascii());
+			new_game.board.add_piece(end, new_game.board(start)->to_ascii());
 		}
 
 		if (new_game.in_check(Game::is_white_turn)) {
 			throw Exception ("move exposes check");
 		}
 
-		if(board.operator()(end)) {
+		if(board(end)) {
 			board.remove_piece(end);
-			board.add_piece(end, board.operator()(start)->to_ascii());
+			board.add_piece(end, board(start)->to_ascii());
 			board.remove_piece(start);
 		} else{
 			board.remove_piece(start);
-			board.add_piece(end, board.operator()(start)->to_ascii());
+			board.add_piece(end, board(start)->to_ascii());
 		}
 
 		// switch turn
@@ -84,12 +84,12 @@ namespace Chess
 	bool Game::in_check(const bool& white) const {
 		Position& target = *(board.begin());
 		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
-			if ((white && board.operator()(*it)->to_ascii() == 'K') || (!white && board.operator()(*it)->to_ascii() == 'k')) {
+			if ((white && board(*it)->to_ascii() == 'K') || (!white && board(*it)->to_ascii() == 'k')) {
 				target = *it;
 			}
 		}
 		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
-			if ((white && !board.operator()(*it)->is_white()) || (!white && board.operator()(*it)->is_white())) {
+			if ((white && !board(*it)->is_white()) || (!white && board(*it)->is_white())) {
 				if (is_legal_move(*it, target)) {
 					return true;
 				}
@@ -109,18 +109,18 @@ namespace Chess
 
 	bool Game::in_stalemate(const bool& white) const {
 		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
-			if ((white && !board.operator()(*it)->is_white()) || (!white && board.operator()(*it)->is_white())) {
+			if ((white && !board(*it)->is_white()) || (!white && board(*it)->is_white())) {
 				std::vector<Position> moves = possible_moves(*it);
 				for (std::vector<Position>::iterator move = moves.begin(); move != moves.end(); ++move) {
 					Game new_game = Game(*this);
 
-					if(new_game.board.operator()(*move)) {
+					if(new_game.board(*move)) {
 						new_game.board.remove_piece(*move);
-						new_game.board.add_piece(*move, new_game.board.operator()(*it)->to_ascii());
+						new_game.board.add_piece(*move, new_game.board(*it)->to_ascii());
 						new_game.board.remove_piece(*it);
 					} else{
 						new_game.board.remove_piece(*it);
-						new_game.board.add_piece(*move, new_game.board.operator()(*it)->to_ascii());
+						new_game.board.add_piece(*move, new_game.board(*it)->to_ascii());
 					}
 					if (!new_game.in_check(white)) {
 						return false;
@@ -137,8 +137,8 @@ namespace Chess
     int Game::point_value(const bool& white) const {
 		int total = 0;
 		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
-			if ((white && board.operator()(*it)->is_white()) || (!white && !board.operator()(*it)->is_white())) {
-				total += board.operator()(*it)->point_value();
+			if ((white && board(*it)->is_white()) || (!white && !board(*it)->is_white())) {
+				total += board(*it)->point_value();
 			}
 		}
 		return total;
@@ -161,7 +161,7 @@ namespace Chess
 
 	//must either remove exceptions or catch them when used
 	bool Game::path_clear(const Position& start, const Position& end) const{
-		const Piece* curr_piece = board.operator() (start);
+		const Piece* curr_piece = board(start);
 		// we might have to switch the order, im not sure
 		//vertical movement
 		if(start.first == end.first && curr_piece->legal_move_shape(start, end)){
@@ -173,7 +173,7 @@ namespace Chess
 				}else{
 					P.second = start.second - i;
 				}
-				if(board.operator()(P)){
+				if(board(P)){
 					throw Exception("path is not clear");
 					return false;
 				}
@@ -189,7 +189,7 @@ namespace Chess
 				} else {
 					P.first = start.first - i;
 				}	
-				if(board.operator()(P)){
+				if(board(P)){
 					throw Exception("path is not clear");
 					return false;
 				}
@@ -216,7 +216,7 @@ namespace Chess
 						P.second = start.second - i;
 					}
 				}
-				if(board.operator()(P)){
+				if(board(P)){
 					throw Exception("path is not clear");
 					return false;
 				}
@@ -227,7 +227,7 @@ namespace Chess
 
 	//must either remove exceptions or catch them when used
 	bool Game::is_legal_move(const Position& start, const Position& end) const {
-		const Piece* curr_piece = board.operator() (start);
+		const Piece* curr_piece = board(start);
 		if (!curr_piece){
 			throw Exception("no piece at start position");
 			return false;
@@ -243,9 +243,9 @@ namespace Chess
 
 
 		// Check if there is a piece
-		if(board.operator()(end)){
+		if(board(end)){
 			// then attempt to capture piece
-			if(curr_piece->is_white() == board.operator()(end)->is_white()){
+			if(curr_piece->is_white() == board(end)->is_white()){
 				throw Exception("cannot capture own piece");
 				return false;
 			}
