@@ -45,13 +45,13 @@ namespace Chess
   }
 
   void Board::display() const {
-    std::cout << "a b c d e f g h" << std::endl;
-    int row_num = 0;
-    int col_num = 0;
+    std::cout << " a b c d e f g h" << std::endl;
+    // int row_num = 0;
+    // int col_num = 0;
     for(char r = '8'; r >= '1'; r--) {
       std::cout << r;
       for(char c = 'A'; c <= 'H'; c++) {
-        if ((row_num % 2 == 0 && col_num % 2 == 0) || (row_num % 2 == 1 && col_num % 2 == 1)) {
+        if ((r % 2 == 0 && c % 2 == 0) || (r % 2 == 1 && c % 2 == 1)) {
           Terminal::color_bg(Terminal::WHITE);
         } else {
           Terminal::color_bg(Terminal::BLACK);
@@ -59,18 +59,18 @@ namespace Chess
         const Piece* piece = this->operator()(Position(c, r));
         if (piece && piece->is_white()) {
           Terminal::color_fg(true, Terminal::WHITE);
-          std::cout << piece->to_unicode();
+          std::cout << piece->to_unicode() << " ";
         } else if (piece && !(piece->is_white())) {
           Terminal::color_fg(true, Terminal::BLACK);
-          std::cout << piece->to_unicode();
+          std::cout << piece->to_unicode() << " ";
         } else {
-          std::cout << " ";
+          std::cout << "  ";
         }
       }
       Terminal::set_default();
       std::cout << r << std::endl;
     }
-    std::cout << "a b c d e f g h" << std::endl;
+    std::cout << " a b c d e f g h" << std::endl;
  
   }
 
@@ -96,7 +96,7 @@ namespace Chess
   }
 
   bool Board::is_valid_position(const Position& position) const {
-    return (position.first >= 'A' && position.first <= 'H' && position.second >= 1 && position.second <= 8);
+    return ((position.first >= 'A' && position.first <= 'H') && (position.second >= '1' && position.second <= '8'));
   }
 
   void Board::remove_piece(const Position& position) {
