@@ -5,10 +5,13 @@ Jiang Zheng; dzheng12
 
 DESIGN:
 The game starts with main creating a new game:
-    Game has a copy constructor to help with the in_check functionality
-    We created separate functions for path checking (path_clear) and legal move checks (is_legal_move)
-    Those functions are called in the other game functions to help consolidate code
+    Game has a copy constructor to help with the in_check and in_stalemate functionality
+
+    We created separate functions for path checking (path_clear) and legal move checks (is_legal_move).
+    Those functions are called in the other game functions to help consolidate code.
     in_mate calls in_stalemate and in_check to have less implementation
+
+    We created an additional function that takes in a position and returns all the legal moves (with the exception of checking if the move exposes check) in order to iterate through possible moves in in_stalemate (possible_moves).
 
     point_value was implemented by using the Board iterator we created and then will add up all the point values assigned to a piece with the matching color as the current turn
 
