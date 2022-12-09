@@ -1,10 +1,26 @@
 TEAM:
 Aaron Ziegler; aziegle6
+Smriti Srikanth; ssrikan2
+Jiang Zheng; dzheng12
 
 DESIGN:
+The game starts with main creating a new game:
+    Game has a copy constructor to help with the in_check functionality
+    We created separate functions for path checking (path_clear) and legal move checks (is_legal_move)
+    Those functions are called in the other game functions to help consolidate code
+    in_mate calls in_stalemate and in_check to have less implementation
+
+    point_value was implemented by using the Board iterator we created and then will add up all the point values assigned to a piece with the matching color as the current turn
+
+    Board has a copy constructor to deep_copy the map
+    It also has a custom iterator to be used for iterating over the board for Game
 
 COMPLETENESS:
+Everything in the code should work correctly from out perspective
+some memory aspects might no be fully implemented
 
 SPECIAL INSTRUCTIONS:
+N/a
 
 OTHER:
+N/a
