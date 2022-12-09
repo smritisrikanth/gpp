@@ -298,7 +298,11 @@ namespace Chess
 			is >> piece_desig;
 			++it;
 			if (piece_desig != '-') {
+				(game.board).remove_piece(*it);
 				(game.board).add_piece(*it, piece_desig);
+			}
+			if(piece_desig == 'w' || piece_desig == 'b'){ //bit of a messy solution 
+				break;
 			}
 		}
 		if (piece_desig == 'w'){

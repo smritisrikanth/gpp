@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
 				break;
 			case 'L': case 'l': {
 				// Load a game from a file
-				
+
         // exit the program with return code -1 if an exception is caught here
 			try{
 				std::string argument;
@@ -98,9 +98,11 @@ int main(int argc, char* argv[]) {
 			}
 			catch (const std::ifstream::failure& e){
 				std::cout << "file_i/o_error: " << e.what() << std::endl;
+				return -1;
 			}
 			catch (const std::exception& e){
 				std::cout << "excpetion: " << e.what() << std::endl;
+				return -1;
 			}
 			}
 			case 'S': case 's': {
