@@ -141,7 +141,7 @@ namespace Chess
 	bool Game::in_stalemate(const bool& white) const {
 		for (Board::iterator it = board.begin(); it != board.end(); ++it) {
 			if (board(*it)) {
-				if ((white && !board(*it)->is_white()) || (!white && board(*it)->is_white())) {
+				if ((white && board(*it)->is_white()) || (!white && !board(*it)->is_white())) {
 					std::vector<Position> moves = possible_moves(*it);
 					for (std::vector<Position>::iterator move = moves.begin(); move != moves.end(); ++move) {
 						Game new_game = Game(*this);
