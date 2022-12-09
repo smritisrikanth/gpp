@@ -245,8 +245,8 @@ namespace Chess
 						P.first = start.first + i;
 						P.second = start.second + i;
 					} else { // down and right
-						P.first = start.first - i;
-						P.second = start.second + i;
+						P.first = start.first + i;
+						P.second = start.second - i;
 					}
 				} else { // to the left
 					if (start.second < end.second){ // up and left
