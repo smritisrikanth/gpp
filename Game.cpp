@@ -196,12 +196,11 @@ namespace Chess
 	}
 
 	bool Game::path_clear(const Position& start, const Position& end) const{
-		const Piece* curr_piece = board(start);
 		//vertical movement
 		if(start.first == end.first){
 			Position P;
 			P.first = start.first;
-			for (int i = 1; i < abs(start.second - end.second) - 1; i++){
+			for (int i = 1; i < abs(start.second - end.second); i++){
 				if (start.second < end.second){
 					P.second = start.second + i;
 				}else{
@@ -216,7 +215,7 @@ namespace Chess
 		if (start.second == end.second){
 			Position P;
 			P.second = start.second;
-			for (int i = 1; i < abs(start.first - end.first) - 1; i++){
+			for (int i = 1; i < abs(start.first - end.first); i++){
 				if (start.first < end.first){
 					P.first = start.first + i;
 				} else {
@@ -230,7 +229,7 @@ namespace Chess
 		//diagonal movement
 		if (abs(start.first - end.first) == abs(start.second - end.second)){
 			Position P;
-			for (int i = 1; i < abs(start.second - end.second) - 1; i++){
+			for (int i = 1; i < abs(start.second - end.second); i++){
 				if (start.first < end.first){ // to the right
 					if (start.second < end.second){ // up and right
 						P.first = start.first + i;
