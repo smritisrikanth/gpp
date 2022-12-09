@@ -55,6 +55,9 @@ namespace Chess
 			if (!board.is_valid_position(end)){
 				throw Exception("end position is not on board");
 			}
+			if (curr_piece->is_white() != is_white_turn) {
+				throw Exception("piece color and turn do not match");
+			}
 			if (board(end)) {
 				if(curr_piece->is_white() == board(end)->is_white()){
 					throw Exception("cannot capture own piece");
@@ -274,6 +277,9 @@ namespace Chess
 			return false;
 		}
 		if (!board.is_valid_position(end)){
+			return false;
+		}
+		if (curr_piece->is_white() != is_white_turn) {
 			return false;
 		}
 
