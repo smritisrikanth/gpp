@@ -44,7 +44,7 @@ namespace Chess
 	void Game::make_move(const Position& start, const Position& end) {
 
 		const Piece* curr_piece = board(start);
-		if (!is_legal_move(start, end)) {
+		//if (!is_legal_move(start, end)) {
 			if (!curr_piece){
 			throw Exception("no piece at start position");
 			}
@@ -72,7 +72,7 @@ namespace Chess
 			if (!path_clear(start,end)) {
 				throw Exception("path is not clear");
 			}
-		}
+		//}
 
 
 
