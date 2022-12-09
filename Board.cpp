@@ -33,6 +33,7 @@ namespace Chess
   void Board::add_piece(const Position& position, const char& piece_designator) {
     Chess::Piece *piece = create_piece(piece_designator);
     if (piece == NULL) {
+      
       throw Exception("invalid designator");
     }
     else if (!is_valid_position(position)) {

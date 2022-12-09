@@ -82,8 +82,8 @@ namespace Chess
 			new_game.board.add_piece(end, new_game.board(start)->to_ascii());
 			new_game.board.remove_piece(start);
 		} else {
-			new_game.board.remove_piece(start);
 			new_game.board.add_piece(end, new_game.board(start)->to_ascii());
+			new_game.board.remove_piece(start);
 		}
 
 		if (new_game.in_check(Game::is_white_turn)) {
@@ -95,8 +95,8 @@ namespace Chess
 			board.add_piece(end, board(start)->to_ascii());
 			board.remove_piece(start);
 		} else{
-			board.remove_piece(start);
 			board.add_piece(end, board(start)->to_ascii());
+			board.remove_piece(start);
 		}
 
 		// switch turn
