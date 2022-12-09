@@ -3,8 +3,7 @@
 
 namespace Chess
 {
-	Game::Game(const Game& copy_game) {
-		board = Board(copy_game.board);
+	Game::Game(const Game& copy_game) : board(copy_game.board) {
 		is_white_turn = copy_game.is_white_turn;
 	}
 	/////////////////////////////////////
