@@ -44,7 +44,7 @@ namespace Chess
 	void Game::make_move(const Position& start, const Position& end) {
 
 		const Piece* curr_piece = board(start);
-		if (curr_piece->is_white() != is_white_turn) {
+		if (curr_piece && curr_piece->is_white() != is_white_turn) {
 			throw Exception("piece color and turn do not match");
 		}
 		
