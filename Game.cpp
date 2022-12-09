@@ -278,7 +278,7 @@ namespace Chess
 		if (!board.is_valid_position(end)){
 			return false;
 		}
-		// if (curr_piece->is_white() == is_white_turn) {
+		// if (curr_piece->is_white() != is_white_turn) {
 		// 	return false;
 		// }
 
