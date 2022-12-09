@@ -83,8 +83,9 @@ int main(int argc, char* argv[]) {
 				break;
 			case 'L': case 'l': {
 				// Load a game from a file
-        // TODO: add try catch blocks to handle any file i/o and gmae loading problem
+				
         // exit the program with return code -1 if an exception is caught here
+			try{
 				std::string argument;
 				std::cin >> argument;
 				std::ifstream ifs;
@@ -94,6 +95,13 @@ int main(int argc, char* argv[]) {
 				// Check that the game is valid
 				assert(game.is_valid_game());
 				break;
+			}
+			catch (const std::ifstream::failure& e){
+				std::cout << "file_i/o_error: " << e.what() << std::endl;
+			}
+			catch (const std::exception& e){
+				std::cout << "excpetion: " << e.what() << std::endl;
+			}
 			}
 			case 'S': case 's': {
 				// Write a game to a file
@@ -116,9 +124,14 @@ int main(int argc, char* argv[]) {
 					  argument << " ) = " << argument.length() << std::endl;
 				// And make the move
 				} else {
-          // TODO: add try catch blocks to recover from illegral moves
-					game.make_move(std::make_pair(argument[0], argument[1]),
+		  			try{
+						game.make_move(std::make_pair(argument[0], argument[1]),
 								   std::make_pair(argument[2], argument[3]));
+					}
+					catch (const std::exception& e){
+						std::cout << "exception: " << e.what() << std::endl;
+					}
+					
 				}
 				break;
 			}
