@@ -290,16 +290,15 @@ namespace Chess
 
     std::istream& operator>>(std::istream& is, Game& game) {
 		char piece_desig; 
-		Board::iterator it = game.board.begin();
 		is >> piece_desig;
-		while (piece_desig != 'w' && piece_desig != 'b'){
-			++it;
+		for (Board::iterator it = game.board.begin(); it != game.board.end(); ++it){
 			(game.board).remove_piece(*it);
-			if (piece_desig != '-') {
+			if(piece_desig != '-'){
 				(game.board).add_piece(*it, piece_desig);
 			}
 			is >> piece_desig;
 		}
+
 		if (piece_desig == 'w'){
 			game.is_white_turn = true;
 		} else if (piece_desig == 'b') {
