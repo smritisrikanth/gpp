@@ -83,7 +83,7 @@ namespace Chess
 		}
 
 		iterator end() const {
-			Position e = std::make_pair('H', '1'); return iterator(e);
+			Position e = std::make_pair('A', '0'); return iterator(e);
 		}
 		
 	private:
