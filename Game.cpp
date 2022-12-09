@@ -44,7 +44,11 @@ namespace Chess
 	void Game::make_move(const Position& start, const Position& end) {
 
 		const Piece* curr_piece = board(start);
-		//if (!is_legal_move(start, end)) {
+		if (curr_piece->is_white() != is_white_turn) {
+			throw Exception("piece color and turn do not match");
+		}
+		
+		if (!is_legal_move(start, end)) {
 			if (!curr_piece){
 			throw Exception("no piece at start position");
 			}
@@ -53,9 +57,6 @@ namespace Chess
 			}
 			if (!board.is_valid_position(end)){
 				throw Exception("end position is not on board");
-			}
-			if (curr_piece->is_white() != is_white_turn) {
-				throw Exception("piece color and turn do not match");
 			}
 			if (board(end)) {
 				if(curr_piece->is_white() == board(end)->is_white()){
@@ -72,9 +73,7 @@ namespace Chess
 			if (!path_clear(start,end)) {
 				throw Exception("path is not clear");
 			}
-		//}
-
-
+		}
 
 		//check if exposes check
 		Game new_game = Game(*this);
@@ -278,9 +277,6 @@ namespace Chess
 		if (!board.is_valid_position(end)){
 			return false;
 		}
-		// if (curr_piece->is_white() != is_white_turn) {
-		// 	return false;
-		// }
 
 		if(board(end)) {
 			if(curr_piece->is_white() == board(end)->is_white()){
