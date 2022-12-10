@@ -97,11 +97,11 @@ int main(int argc, char* argv[]) {
 				break;
 			}
 			catch (const std::ifstream::failure& e){
-				std::cout << "Cannot load the game!" << e.what() << std::endl;
+				std::cerr << "Cannot load the game!" << e.what() << std::endl;
 				return -1;
 			}
 			catch (const std::exception& e){
-				std::cout << "exception: " << e.what() << std::endl;
+				std::cerr << "exception: " << e.what() << std::endl;
 				return -1;
 			}
 			}
@@ -131,7 +131,7 @@ int main(int argc, char* argv[]) {
 								   std::make_pair(argument[2], argument[3]));
 					}
 					catch (const std::exception& e){
-						std::cout << "Could not make move: " << e.what() << std::endl;
+						std::cerr << "Could not make move: " << e.what() << std::endl;
 					}
 					
 				}
