@@ -93,9 +93,15 @@ namespace Chess
 
 		// pawn promotion
 		if (board(start)->to_ascii() == 'P' && curr_piece->is_white() && end.second == '8') {
+			if (board(end)) {
+				board.remove_piece(end);
+			}
 			board.add_piece(end, 'Q');
 			board.remove_piece(start);
 		} else if (board(start)->to_ascii() == 'p' && !curr_piece->is_white() && end.second == '1') {
+			if (board(end)) {
+				board.remove_piece(end);
+			}
 			board.add_piece(end, 'q');
 			board.remove_piece(start);
 		// capture
